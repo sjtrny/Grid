@@ -11,6 +11,12 @@
 		AA4421E216E30B1800A9F989 /* GameView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA4421E116E30B1800A9F989 /* GameView.m */; };
 		AA4421E516E30BBB00A9F989 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA4421E416E30BBB00A9F989 /* OpenGL.framework */; };
 		AA4421E716E30BCE00A9F989 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA4421E616E30BCE00A9F989 /* Quartz.framework */; };
+		AA5FDB7216E358B50039F6B7 /* pause1.png in Resources */ = {isa = PBXBuildFile; fileRef = AA5FDB6F16E358B50039F6B7 /* pause1.png */; };
+		AA5FDB7316E358B50039F6B7 /* play1.png in Resources */ = {isa = PBXBuildFile; fileRef = AA5FDB7016E358B50039F6B7 /* play1.png */; };
+		AA5FDB7416E358B50039F6B7 /* stop1.png in Resources */ = {isa = PBXBuildFile; fileRef = AA5FDB7116E358B50039F6B7 /* stop1.png */; };
+		AA5FDB7716E3618F0039F6B7 /* GameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5FDB7616E3618F0039F6B7 /* GameWindow.m */; };
+		AA5FDB7A16E362F00039F6B7 /* GameController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5FDB7916E362F00039F6B7 /* GameController.m */; };
+		AA6AD59516E31CF60096AE0F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA6AD59416E31CF60096AE0F /* GLUT.framework */; };
 		AAA0411816E3098900FA4A97 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA0411716E3098900FA4A97 /* Cocoa.framework */; };
 		AAA0412216E3098900FA4A97 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAA0412016E3098900FA4A97 /* InfoPlist.strings */; };
 		AAA0412416E3098900FA4A97 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA0412316E3098900FA4A97 /* main.m */; };
@@ -31,6 +37,14 @@
 		AA4421E316E30B1E00A9F989 /* CarbonKeyEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarbonKeyEvents.h; sourceTree = "<group>"; };
 		AA4421E416E30BBB00A9F989 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		AA4421E616E30BCE00A9F989 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		AA5FDB6F16E358B50039F6B7 /* pause1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause1.png; sourceTree = "<group>"; };
+		AA5FDB7016E358B50039F6B7 /* play1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play1.png; sourceTree = "<group>"; };
+		AA5FDB7116E358B50039F6B7 /* stop1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stop1.png; sourceTree = "<group>"; };
+		AA5FDB7516E3618F0039F6B7 /* GameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameWindow.h; sourceTree = "<group>"; };
+		AA5FDB7616E3618F0039F6B7 /* GameWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameWindow.m; sourceTree = "<group>"; };
+		AA5FDB7816E362F00039F6B7 /* GameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameController.h; sourceTree = "<group>"; };
+		AA5FDB7916E362F00039F6B7 /* GameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameController.m; sourceTree = "<group>"; };
+		AA6AD59416E31CF60096AE0F /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		AAA0411416E3098900FA4A97 /* Grid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Grid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA0411716E3098900FA4A97 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		AAA0411A16E3098900FA4A97 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -58,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA6AD59516E31CF60096AE0F /* GLUT.framework in Frameworks */,
 				AA4421E716E30BCE00A9F989 /* Quartz.framework in Frameworks */,
 				AA4421E516E30BBB00A9F989 /* OpenGL.framework in Frameworks */,
 				AAA0411816E3098900FA4A97 /* Cocoa.framework in Frameworks */,
@@ -67,9 +82,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA5FDB6E16E358B50039F6B7 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				AA5FDB6F16E358B50039F6B7 /* pause1.png */,
+				AA5FDB7016E358B50039F6B7 /* play1.png */,
+				AA5FDB7116E358B50039F6B7 /* stop1.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		AAA0410B16E3098900FA4A97 = {
 			isa = PBXGroup;
 			children = (
+				AA6AD59416E31CF60096AE0F /* GLUT.framework */,
 				AAA0411D16E3098900FA4A97 /* Grid */,
 				AAA0411616E3098900FA4A97 /* Frameworks */,
 				AAA0411516E3098900FA4A97 /* Products */,
@@ -111,12 +137,17 @@
 				AAA0412916E3098900FA4A97 /* AppDelegate.h */,
 				AAA0412A16E3098900FA4A97 /* AppDelegate.m */,
 				AAA0412C16E3098900FA4A97 /* MainMenu.xib */,
+				AA5FDB7816E362F00039F6B7 /* GameController.h */,
+				AA5FDB7916E362F00039F6B7 /* GameController.m */,
+				AA5FDB7516E3618F0039F6B7 /* GameWindow.h */,
+				AA5FDB7616E3618F0039F6B7 /* GameWindow.m */,
 				AA4421E016E30B1800A9F989 /* GameView.h */,
 				AA4421E116E30B1800A9F989 /* GameView.m */,
 				AA4421DD16E30B1200A9F989 /* NSMutableArray+QueueAdditions.h */,
 				AA4421DE16E30B1200A9F989 /* NSMutableArray+QueueAdditions.m */,
 				AA4421E316E30B1E00A9F989 /* CarbonKeyEvents.h */,
 				AAA0413416E30A0D00FA4A97 /* TetrominoEngine */,
+				AA5FDB6E16E358B50039F6B7 /* images */,
 				AAA0411E16E3098900FA4A97 /* Supporting Files */,
 			);
 			path = Grid;
@@ -202,6 +233,9 @@
 				AAA0412816E3098900FA4A97 /* Credits.rtf in Resources */,
 				AAA0412E16E3098900FA4A97 /* MainMenu.xib in Resources */,
 				AAA0413E16E30A0D00FA4A97 /* LICENSE.txt in Resources */,
+				AA5FDB7216E358B50039F6B7 /* pause1.png in Resources */,
+				AA5FDB7316E358B50039F6B7 /* play1.png in Resources */,
+				AA5FDB7416E358B50039F6B7 /* stop1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +253,8 @@
 				AAA0413F16E30A0D00FA4A97 /* Pieces.m in Sources */,
 				AA4421DF16E30B1200A9F989 /* NSMutableArray+QueueAdditions.m in Sources */,
 				AA4421E216E30B1800A9F989 /* GameView.m in Sources */,
+				AA5FDB7716E3618F0039F6B7 /* GameWindow.m in Sources */,
+				AA5FDB7A16E362F00039F6B7 /* GameController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,7 +15,7 @@
 #include "Pieces.h"
 
 #define BOARD_LINE_WIDTH 6			// Width of each of the two lines that delimit the board
-#define BLOCK_SIZE 16				// Width and Height of each block of a piece
+#define BLOCK_SIZE 20				// Width and Height of each block of a piece
 #define BOARD_POSITION 320			// Center position of the board from the left of the screen
 #define BOARD_WIDTH 10				// Board width in blocks
 #define BOARD_HEIGHT 20				// Board height in blocks
@@ -27,13 +27,10 @@
     enum { POS_FREE, POS_FILLED };			// POS_FREE = free position of the board; POS_FILLED = filled position of the board
 	int mBoard [BOARD_WIDTH][BOARD_HEIGHT];	// Board that contains the pieces
 	Pieces *mPieces;
-	int mScreenHeight;
 }
 
-- (id)initWithPieces:(Pieces*)pieces SreenHeight:(int)screenHeight;
+- (id)initWithPieces:(Pieces*)pieces;
 
-- (int)getXPosInPixels:(int)pos;
-- (int)getYPosInPixels:(int)pos;
 - (BOOL)isFreeBlockAtX:(int)x andY:(int)y;
 - (BOOL)isPossibleMovementAtX:(int)x andY:(int)y withPiece:(int)piece andRotation:(int)rotation;
 - (void)storePieceAtX:(int)x andY:(int)y withPiece:(int)piece andRotation:(int)rotation;

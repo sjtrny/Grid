@@ -13,18 +13,21 @@
 
 #import "GameView.h"
 #import "CarbonKeyEvents.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 @implementation GameView
 
 - (void)awakeFromNib
 {
-    keyDownEvents = [[NSMutableArray alloc] init];
     mTime1 = clock();
     
-    mScreenHeight = self.frame.size.height;
     mPieces = [[Pieces alloc] init];
-    mBoard = [[Board alloc] initWithPieces:mPieces SreenHeight:mScreenHeight];
-    mGame = [[Game alloc] initWithBoard:mBoard Pieces:mPieces andScreenHeight:mScreenHeight];
+    mBoard = [[Board alloc] initWithPieces:mPieces];
+    mGame = [[Game alloc] initWithBoard:mBoard Pieces:mPieces];
 }
 
 - (void)prepareOpenGL
@@ -69,6 +72,65 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
     return kCVReturnSuccess;
 }
 
+/*
+ Draws a filled rectangle
+ */
+- (void)drawRectangle:(CGRect)rectangle
+{
+    glBegin(GL_POLYGON);
+    glVertex2i(rectangle.origin.x, rectangle.origin.y);
+    glVertex2i(rectangle.origin.x + rectangle.size.width, rectangle.origin.y);
+    glVertex2i(rectangle.origin.x + rectangle.size.width, rectangle.origin.y + rectangle.size.height);
+    glVertex2i(rectangle.origin.x, rectangle.origin.y + rectangle.size.height);
+    glEnd();
+}
+
+- (void)drawBoardBackground
+{
+    glColor3f(1.0, 1.0, 1.0);
+    
+    CGRect board = CGRectMake(0, 0, BLOCK_SIZE * BOARD_WIDTH, BLOCK_SIZE * BOARD_HEIGHT);
+    [self drawRectangle:board];
+}
+
+- (void)drawDroppedPieces
+{
+    glColor3f(1.0, 0.0, 0.0);
+	for (int i = 0; i < BOARD_WIDTH; i++)
+	{
+		for (int j = 0; j < BOARD_HEIGHT; j++)
+		{
+			// Check if the block is filled, if so, draw it
+			if (![mBoard isFreeBlockAtX:i andY:j])
+            {
+                [self drawRectangle:CGRectMake(i * BLOCK_SIZE, j * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1)];
+            }
+		}
+	}
+}
+
+- (void)drawPieceAtX:(int)x andY:(int)y withPiece:(int)piece andRotation:(int)rotation
+{
+    // Travel the matrix of blocks of the piece and draw the blocks that are filled
+	for (int i = 0; i < PIECE_BLOCKS; i++)
+	{
+		for (int j = 0; j < PIECE_BLOCKS; j++)
+		{
+			// Get the type of the block and draw it with the correct color
+			switch ([mPieces getBlockTypeForPiece:piece withRotation:rotation atLocationWithX:j andY:i])
+			{
+				case 1: glColor3f(0.0, 1.0, 0.0);; break;	// For each block of the piece except the pivot
+				case 2: glColor3f(0.0, 0.0, 1.0);; break;	// For the pivot
+			}
+			
+			if ([mPieces getBlockTypeForPiece:piece withRotation:rotation atLocationWithX:j andY:i] != 0)
+            {
+                [self drawRectangle:CGRectMake(x *BLOCK_SIZE + i * BLOCK_SIZE,y * BLOCK_SIZE + j * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1)];
+            }
+		}
+	}
+}
+
 - (void) drawView
 {
 	[[self openGLContext] makeCurrentContext];
@@ -79,15 +141,24 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	CGLLockContext([[self openGLContext] CGLContextObj]);
     
     // Set viewport
+    glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     glLoadIdentity();
     glOrtho(0, self.frame.size.width, self.frame.size.height, 0, -1, 1);
     
     // Clear buffer
     glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
     
-    // Drawing code here
-    [mGame drawScence];
+    glClear(GL_COLOR_BUFFER_BIT);
+        
+    // Draw board background
+    [self drawBoardBackground];
+    [self drawDroppedPieces];
+    
+    // Draw the current playing piece
+	[self drawPieceAtX:mGame.mPosX andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation];
+    
+    // Draw the next piece
+	[self drawPieceAtX:mGame.mNextPosX andY:mGame.mNextPosY withPiece:mGame.mNextPiece andRotation:mGame.mNextRotation];
     
     // Update screen
     glFlush();
@@ -98,59 +169,48 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 - (void)updateView
 {
     // Handle input
-    NSEvent *latestEvent = [keyDownEvents dequeue];
-    if (latestEvent != nil)
+    if (keyboardState[kVK_RightArrow])
     {
-        int keyCode = [latestEvent keyCode];
-        switch (keyCode)
-        {
-            case kVK_RightArrow:
-            {
-                if ([mBoard isPossibleMovementAtX:mGame.mPosX + 1 andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
-					mGame.mPosX++;
-                break;
-            }
-            case kVK_LeftArrow:
-            {
-                if ([mBoard isPossibleMovementAtX:mGame.mPosX - 1 andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
-					mGame.mPosX--;
-                break;
-            }
-            case kVK_DownArrow:
-            {
-                if ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY + 1 withPiece:mGame.mPiece andRotation:mGame.mRotation])
-					mGame.mPosY++;
-                break;
-            }
-            case kVK_Space:
-            {
-                // Check collision from up to down
-				while ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
-                {
-                    mGame.mPosY++;
-                }
-                
-                [mBoard storePieceAtX:mGame.mPosX andY:mGame.mPosY - 1 withPiece:mGame.mPiece andRotation:mGame.mRotation];
-                
-                [mBoard deletePossibleLines];
-                
-				if ([mBoard isGameOver])
-				{
-					[[NSApplication sharedApplication] terminate:nil];
-				}
-                
-                [mGame createNewPiece];
-                
-                break;
-            }
-            case kVK_UpArrow:
-            {
-                if ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY withPiece:mGame.mPiece andRotation:(mGame.mRotation + 1) % 4])
-					mGame.mRotation = (mGame.mRotation + 1) % 4;
-                break;
-            }
-        }
+        if ([mBoard isPossibleMovementAtX:mGame.mPosX + 1 andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
+            mGame.mPosX++;
     }
+    if (keyboardState[kVK_LeftArrow])
+    {
+        if ([mBoard isPossibleMovementAtX:mGame.mPosX - 1 andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
+            mGame.mPosX--;
+    }
+    if (keyboardState[kVK_DownArrow])
+    {
+        if ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY + 1 withPiece:mGame.mPiece andRotation:mGame.mRotation])
+            mGame.mPosY++;
+    }
+    if (keyboardState[kVK_Space])
+    {
+        // Check collision from up to down
+        while ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
+        {
+            mGame.mPosY++;
+        }
+        
+        [mBoard storePieceAtX:mGame.mPosX andY:mGame.mPosY - 1 withPiece:mGame.mPiece andRotation:mGame.mRotation];
+        
+        [mBoard deletePossibleLines];
+        
+        if ([mBoard isGameOver])
+        {
+            [[NSApplication sharedApplication] terminate:nil];
+        }
+        
+        [mGame createNewPiece];
+        
+    }
+    if (keyboardState[kVK_UpArrow])
+    {
+        if ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY withPiece:mGame.mPiece andRotation:(mGame.mRotation + 1) % 4])
+            mGame.mRotation = (mGame.mRotation + 1) % 4;
+
+    }
+
     
     // Handle vertical movement
     
@@ -186,9 +246,26 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
        [[NSApplication sharedApplication] terminate:nil];
     else
     {
-        [keyDownEvents enqueue:theEvent];
+        keyboardState[[theEvent keyCode]] = TRUE;
     }
 }
+
+- (void)keyUp:(NSEvent *)theEvent
+{
+    keyboardState[[theEvent keyCode]] = FALSE;
+}
+
+- (void) reshape
+{
+    // Anti flickering magic
+	[[self openGLContext] update];
+}
+
+- (void)update
+{
+    
+}
+
 
 -(BOOL)acceptsFirstResponder { return YES; }
 

@@ -15,6 +15,7 @@
 #import <QuartzCore/CVDisplayLink.h>
 #import "Game.h"
 #import "NSMutableArray+QueueAdditions.h"
+#import "CarbonKeyEvents.h" 
 
 @interface GameView : NSOpenGLView
 {
@@ -22,12 +23,11 @@
 
     long mTime1;
     
-    int mScreenHeight;
     Pieces *mPieces;
     Board *mBoard;
     Game *mGame;
     
-    NSMutableArray *keyDownEvents;
+    BOOL keyboardState[NUMKEYS];
 }
 
 @end

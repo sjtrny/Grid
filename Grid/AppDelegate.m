@@ -7,12 +7,28 @@
 //
 
 #import "AppDelegate.h"
+#import "GameController.h"
 
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
+}
+
+-(void) specialWindowDidResize: (NSNotification*) n
+{
+    // Code that was unhappy when executing on a non-main thread
+}
+
+
+- (void)windowWillStartLiveResize:(NSNotification *)notification
+{
+}
+
+- (void)windowDidEndLiveResize:(NSNotification *)notification
+{
+    
 }
 
 @end

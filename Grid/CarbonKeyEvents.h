@@ -148,6 +148,8 @@ enum {
 	kVK_UpArrow                   = 0x7E
 };
 
+#define NUMKEYS kVK_UpArrow+1
+
 /* ISO keyboards only*/
 enum {
 	kVK_ISO_Section               = 0x0A

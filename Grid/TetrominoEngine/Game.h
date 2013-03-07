@@ -20,21 +20,18 @@
 
 #define WAIT_TIME 10000			// Number of milliseconds that the piece remains before going 1 block down */
 
-@interface Game : NSObject {
-    int mScreenHeight;				// Screen height in pixels
-	int mNextPosX, mNextPosY;		// Position of the next piece
-	int mNextPiece, mNextRotation;	// Kind and rotation of the next piece
-    
+@interface Game : NSObject { 
 	Board *mBoard;
 	Pieces *mPieces;
 }
 
-- (id)initWithBoard:(Board*)board Pieces:(Pieces*)pieces andScreenHeight:(int)screenHeight;
+- (id)initWithBoard:(Board*)board Pieces:(Pieces*)pieces;
 
 - (void)createNewPiece;
-- (void)drawScence;
 
 @property int mPosX, mPosY;         // Position of the piece that is falling down
 @property int mPiece, mRotation;    // Kind and rotation the piece that is falling down
+@property int mNextPosX, mNextPosY;		// Position of the next piece
+@property int mNextPiece, mNextRotation;	// Kind and rotation of the next piece
 
 @end

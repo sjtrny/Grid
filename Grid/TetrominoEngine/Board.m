@@ -15,15 +15,12 @@
 
 @implementation Board
 
-- (id)initWithPieces:(Pieces*)pieces SreenHeight:(int)screenHeight
+- (id)initWithPieces:(Pieces*)pieces
 {
     self = [super init];
     if (self) {
         // Get the pointer to the pieces class
         mPieces = pieces;
-        
-        // Get the screen height
-        mScreenHeight = screenHeight;
         
         //Init the board blocks with free positions
         [self initBoard];
@@ -37,28 +34,6 @@
 	for (int i = 0; i < BOARD_WIDTH; i++)
 		for (int j = 0; j < BOARD_HEIGHT; j++)
 			mBoard[i][j] = POS_FREE;
-}
-
-/*
- Returns the horizontal position (isn pixels) of the block given like parameter
- 
- Parameters:
- >> pPos:	Horizontal position of the block in the board
- */
-- (int)getXPosInPixels:(int)pos
-{
-    return  ( ( BOARD_POSITION - (BLOCK_SIZE * (BOARD_WIDTH / 2)) ) + (pos * BLOCK_SIZE) );
-}
-
-/*
- Returns the vertical position (in pixels) of the block given like parameter
- 
- Parameters:
- >> pPos:	Horizontal position of the block in the board
- */
-- (int)getYPosInPixels:(int)pos
-{
-    return ( (mScreenHeight - (BLOCK_SIZE * BOARD_HEIGHT)) + (pos * BLOCK_SIZE) );
 }
 
 /*
