@@ -12,10 +12,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
 @interface Pieces : NSObject
 
 - (int)getBlockTypeForPiece:(int)piece withRotation:(int)rotation atLocationWithX:(int)x andY:(int)y;
+- (NSColor*)colourForPiece:(int)piece;
 - (int)getXInitialPosition:(int)piece withRoation:(int)rotation;
 - (int)getYInitialPosition:(int)piece withRoation:(int)rotation;
 

@@ -26,7 +26,8 @@
         // Get the pointer to the Board and Pieces classes
         mBoard = board;
         mPieces = pieces;
-//    	mIO = pIO;
+        mRotation = 0;
+        mNextRotation 	= 0;
         
         // Game initialization
         [self initGame];
@@ -44,15 +45,13 @@
     
 	// First piece
 	mPiece			= [self getRandBetween:0 and:6];
-	mRotation		= [self getRandBetween:0 and:3];
 	mPosX 			= (BOARD_WIDTH / 2) + [mPieces getXInitialPosition:mPiece withRoation:mRotation];
 	mPosY 			= [mPieces getYInitialPosition:mPiece withRoation:mRotation];
     
 	//  Next piece
 	mNextPiece 		= [self getRandBetween:0 and:6];
-	mNextRotation 	= [self getRandBetween:0 and:3];
-	mNextPosX 		= BOARD_WIDTH + 5;
-	mNextPosY 		= 5;
+	mNextPosX 		= BOARD_WIDTH + 6;
+	mNextPosY 		= -1;
 }
 
 - (int)getRandBetween:(int)pA and:(int)pB
@@ -64,13 +63,11 @@
 {
     // The new piece
 	mPiece			= mNextPiece;
-	mRotation		= mNextRotation;
 	mPosX 			= (BOARD_WIDTH / 2) + [mPieces getXInitialPosition:mPiece withRoation:mRotation];
 	mPosY 			= [mPieces getYInitialPosition:mPiece withRoation:mRotation];
     
 	// Random next piece
 	mNextPiece 		= [self getRandBetween:0 and:6];
-	mNextRotation 	= [self getRandBetween:0 and:3];
 }
 
 @end

@@ -21,7 +21,10 @@
 {
     CVDisplayLinkRef displayLink; //display link for managing rendering thread
 
-    long mTime1;
+    long lastVerticalUpdate;
+    long lastXMove;
+    long lastSpin;
+    long lastDrop;
     
     Pieces *mPieces;
     Board *mBoard;

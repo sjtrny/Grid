@@ -33,7 +33,10 @@
 {
 	for (int i = 0; i < BOARD_WIDTH; i++)
 		for (int j = 0; j < BOARD_HEIGHT; j++)
+        {
 			mBoard[i][j] = POS_FREE;
+            mColorBoard[i][j] = -1;
+        }
 }
 
 /*
@@ -46,6 +49,11 @@
 - (BOOL)isFreeBlockAtX:(int)x andY:(int)y
 {
     if (mBoard [x][y] == POS_FREE) return true; else return false;
+}
+
+- (int)pieceAtX:(int)x andY:(int)y
+{
+    return mColorBoard[x][y];
 }
 
 /*
@@ -107,7 +115,10 @@
 		{
 			// Store only the blocks of the piece that are not holes
 			if ([mPieces getBlockTypeForPiece:piece withRotation:rotation atLocationWithX:j2 andY:i2] != 0)
+            {
 				mBoard[i1][j1] = POS_FILLED;
+                mColorBoard[i1][j1] = piece;
+            }
 		}
 	}
 }
@@ -126,6 +137,7 @@ Parameters:
 		for (int i = 0; i < BOARD_WIDTH; i++)
 		{
 			mBoard[i][j] = mBoard[i][j-1];
+            mColorBoard[i][j] = mColorBoard[i][j-1];
 		}
 	}
 }

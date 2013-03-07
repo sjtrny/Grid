@@ -23,7 +23,10 @@
 
 - (void)awakeFromNib
 {
-    mTime1 = clock();
+    lastVerticalUpdate = clock();
+    lastXMove = clock();
+    lastSpin = clock();
+    lastDrop =  clock();
     
     mPieces = [[Pieces alloc] init];
     mBoard = [[Board alloc] initWithPieces:mPieces];
@@ -95,7 +98,6 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 
 - (void)drawDroppedPieces
 {
-    glColor3f(1.0, 0.0, 0.0);
 	for (int i = 0; i < BOARD_WIDTH; i++)
 	{
 		for (int j = 0; j < BOARD_HEIGHT; j++)
@@ -103,6 +105,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 			// Check if the block is filled, if so, draw it
 			if (![mBoard isFreeBlockAtX:i andY:j])
             {
+                NSColor *color = [mPieces colourForPiece:[mBoard pieceAtX:i andY:j]];
+                glColor3f([color redComponent], [color greenComponent], [color blueComponent]);
+                
                 [self drawRectangle:CGRectMake(i * BLOCK_SIZE, j * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1)];
             }
 		}
@@ -116,19 +121,51 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	{
 		for (int j = 0; j < PIECE_BLOCKS; j++)
 		{
-			// Get the type of the block and draw it with the correct color
-			switch ([mPieces getBlockTypeForPiece:piece withRotation:rotation atLocationWithX:j andY:i])
-			{
-				case 1: glColor3f(0.0, 1.0, 0.0);; break;	// For each block of the piece except the pivot
-				case 2: glColor3f(0.0, 0.0, 1.0);; break;	// For the pivot
-			}
-			
+            NSColor *color = [mPieces colourForPiece:piece];
+            glColor3f([color redComponent], [color greenComponent], [color blueComponent]);
+            
 			if ([mPieces getBlockTypeForPiece:piece withRotation:rotation atLocationWithX:j andY:i] != 0)
             {
                 [self drawRectangle:CGRectMake(x *BLOCK_SIZE + i * BLOCK_SIZE,y * BLOCK_SIZE + j * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1)];
             }
 		}
 	}
+}
+
+/**
+ *	Draw the current x any y angles
+ *	Requires the projection matrix to be modified
+ *	The dirtied matrix is popped at the end to restore the previous state
+ */
+void drawText(NSString *text, CGPoint location)
+{
+//	// Change the matrix mode
+//	glMatrixMode(GL_PROJECTION);
+	
+//	// Push a matrix onto the stack
+//	glPushMatrix();
+//	
+//	// Clear the matrix
+//	glLoadIdentity();
+//	
+//	// Set the matrix to be an orthogonal projection
+//	gluOrtho2D(0.0, 800, 0.0, 800);
+	
+	// Set the text colour.  Needs to be called before raster position is set
+	glColor3f(1.0,1.0,1.0);
+	
+	// Set the raster position for bitmap operations
+	glRasterPos2i(location.x, location.y);
+	
+	// Create a char array pointer to be set later
+	const char *string = [text UTF8String];
+	
+	// Loop through the char array printing each character
+	for (int i = 0; i < [text length]; i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, string[i]);
+	
+	// Pop the dirtied matrix
+//	glPopMatrix();
 }
 
 - (void) drawView
@@ -149,13 +186,21 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
     glClearColor(0, 0, 0, 0);
     
     glClear(GL_COLOR_BUFFER_BIT);
-        
-    // Draw board background
+    
+    drawText(@"Next", CGPointMake(250, 40));
+    
+    // Center everything
+    glPushMatrix();
+    glTranslatef(([self frame].size.width/4 ) -(BLOCK_SIZE * BOARD_WIDTH)/2, 10, 0);
+    
     [self drawBoardBackground];
+    
     [self drawDroppedPieces];
     
     // Draw the current playing piece
 	[self drawPieceAtX:mGame.mPosX andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation];
+    
+    glPopMatrix();
     
     // Draw the next piece
 	[self drawPieceAtX:mGame.mNextPosX andY:mGame.mNextPosY withPiece:mGame.mNextPiece andRotation:mGame.mNextRotation];
@@ -168,23 +213,31 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 
 - (void)updateView
 {
+    unsigned long currentTime = clock();
+    
     // Handle input
-    if (keyboardState[kVK_RightArrow])
+    if ((keyboardState[kVK_RightArrow] || keyboardState[kVK_LeftArrow]) && (currentTime - lastXMove) > WAIT_TIME/10)
     {
-        if ([mBoard isPossibleMovementAtX:mGame.mPosX + 1 andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
-            mGame.mPosX++;
+        if (keyboardState[kVK_RightArrow])
+        {
+            if ([mBoard isPossibleMovementAtX:mGame.mPosX + 1 andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
+                mGame.mPosX++;
+        }
+        if (keyboardState[kVK_LeftArrow])
+        {
+            if ([mBoard isPossibleMovementAtX:mGame.mPosX - 1 andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
+                mGame.mPosX--;
+        }
+        
+        lastXMove = clock();
     }
-    if (keyboardState[kVK_LeftArrow])
-    {
-        if ([mBoard isPossibleMovementAtX:mGame.mPosX - 1 andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
-            mGame.mPosX--;
-    }
+    
     if (keyboardState[kVK_DownArrow])
     {
         if ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY + 1 withPiece:mGame.mPiece andRotation:mGame.mRotation])
             mGame.mPosY++;
     }
-    if (keyboardState[kVK_Space])
+    if (keyboardState[kVK_Space] && (currentTime - lastDrop) > WAIT_TIME)
     {
         // Check collision from up to down
         while ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY withPiece:mGame.mPiece andRotation:mGame.mRotation])
@@ -202,21 +255,19 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
         }
         
         [mGame createNewPiece];
-        
+        lastDrop = clock();
     }
-    if (keyboardState[kVK_UpArrow])
+    if (keyboardState[kVK_UpArrow] && (currentTime - lastSpin) > WAIT_TIME/4)
     {
         if ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY withPiece:mGame.mPiece andRotation:(mGame.mRotation + 1) % 4])
             mGame.mRotation = (mGame.mRotation + 1) % 4;
-
+        lastSpin = clock();
     }
 
     
     // Handle vertical movement
     
-    unsigned long mTime2 = clock();
-    
-    if ((mTime2 - mTime1) > WAIT_TIME)
+    if ((currentTime - lastVerticalUpdate) > WAIT_TIME)
     {
         if ([mBoard isPossibleMovementAtX:mGame.mPosX andY:mGame.mPosY+1 withPiece:mGame.mPiece andRotation:mGame.mRotation])
         {
@@ -230,13 +281,13 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
             
             if ([mBoard isGameOver])
             {
-                       [[NSApplication sharedApplication] terminate:nil];
+                   [[NSApplication sharedApplication] terminate:nil];
             }
             
             [mGame createNewPiece];
         }
         
-        mTime1 = clock();
+        lastVerticalUpdate = clock();
     }
 }
 

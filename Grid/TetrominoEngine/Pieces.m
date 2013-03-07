@@ -86,13 +86,6 @@ static const char mPieces [7 /*kind */ ][4 /* rotation */ ][5 /* horizontal bloc
     {
         {
             {0, 0, 0, 0, 0},
-            {0, 0, 1, 0, 0},
-            {0, 0, 2, 0, 0},
-            {0, 0, 1, 1, 0},
-            {0, 0, 0, 0, 0}
-        },
-        {
-            {0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0},
             {0, 1, 2, 1, 0},
             {0, 1, 0, 0, 0},
@@ -110,6 +103,13 @@ static const char mPieces [7 /*kind */ ][4 /* rotation */ ][5 /* horizontal bloc
             {0, 0, 0, 1, 0},
             {0, 1, 2, 1, 0},
             {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0}
+        },
+        {
+            {0, 0, 0, 0, 0},
+            {0, 0, 1, 0, 0},
+            {0, 0, 2, 0, 0},
+            {0, 0, 1, 1, 0},
             {0, 0, 0, 0, 0}
         }
     },
@@ -117,6 +117,13 @@ static const char mPieces [7 /*kind */ ][4 /* rotation */ ][5 /* horizontal bloc
     {
         {
             {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 1, 2, 1, 0},
+            {0, 0, 0, 1, 0},
+            {0, 0, 0, 0, 0}
+        },
+        {
+            {0, 0, 0, 0, 0},
             {0, 0, 1, 0, 0},
             {0, 0, 2, 0, 0},
             {0, 1, 1, 0, 0},
@@ -134,13 +141,6 @@ static const char mPieces [7 /*kind */ ][4 /* rotation */ ][5 /* horizontal bloc
             {0, 0, 1, 1, 0},
             {0, 0, 2, 0, 0},
             {0, 0, 1, 0, 0},
-            {0, 0, 0, 0, 0}
-        },
-        {
-            {0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0},
-            {0, 1, 2, 1, 0},
-            {0, 0, 0, 1, 0},
             {0, 0, 0, 0, 0}
         }
     },
@@ -148,13 +148,6 @@ static const char mPieces [7 /*kind */ ][4 /* rotation */ ][5 /* horizontal bloc
     {
         {
             {0, 0, 0, 0, 0},
-            {0, 0, 0, 1, 0},
-            {0, 0, 2, 1, 0},
-            {0, 0, 1, 0, 0},
-            {0, 0, 0, 0, 0}
-        },
-        {
-            {0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0},
             {0, 1, 2, 0, 0},
             {0, 0, 1, 1, 0},
@@ -172,6 +165,13 @@ static const char mPieces [7 /*kind */ ][4 /* rotation */ ][5 /* horizontal bloc
             {0, 1, 1, 0, 0},
             {0, 0, 2, 1, 0},
             {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0}
+        },
+        {
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 0},
+            {0, 0, 2, 1, 0},
+            {0, 0, 1, 0, 0},
             {0, 0, 0, 0, 0}
         }
     },
@@ -179,13 +179,6 @@ static const char mPieces [7 /*kind */ ][4 /* rotation */ ][5 /* horizontal bloc
     {
         {
             {0, 0, 0, 0, 0},
-            {0, 0, 1, 0, 0},
-            {0, 0, 2, 1, 0},
-            {0, 0, 0, 1, 0},
-            {0, 0, 0, 0, 0}
-        },
-        {
-            {0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0},
             {0, 0, 2, 1, 0},
             {0, 1, 1, 0, 0},
@@ -204,17 +197,17 @@ static const char mPieces [7 /*kind */ ][4 /* rotation */ ][5 /* horizontal bloc
             {0, 1, 2, 0, 0},
             {0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0}
-        }
-    },
-    // T
-    {
+        },
         {
             {0, 0, 0, 0, 0},
             {0, 0, 1, 0, 0},
             {0, 0, 2, 1, 0},
-            {0, 0, 1, 0, 0},
+            {0, 0, 0, 1, 0},
             {0, 0, 0, 0, 0}
-        },
+        }
+    },
+    // T
+    {
         {
             {0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0},
@@ -234,6 +227,13 @@ static const char mPieces [7 /*kind */ ][4 /* rotation */ ][5 /* horizontal bloc
             {0, 0, 1, 0, 0},
             {0, 1, 2, 1, 0},
             {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0}
+        },
+        {
+            {0, 0, 0, 0, 0},
+            {0, 0, 1, 0, 0},
+            {0, 0, 2, 1, 0},
+            {0, 0, 1, 0, 0},
             {0, 0, 0, 0, 0}
         }
     }
@@ -245,51 +245,51 @@ static const int mPiecesInitialPosition  [7 /*kind */ ][4 /* rotation */ ][2 /* 
 {
     /* Square */
     {
-        {-2, -3}, 
-        {-2, -3},
-        {-2, -3},
-        {-2, -3}
+        {-3, -2},
+        {-3, -2},
+        {-3, -2},
+        {-3, -2}
     },
     /* I */
     {
-        {-2, -2},
-        {-2, -3},
-        {-2, -2},
-        {-2, -3}
+        {-3, -2},
+        {-3, -3},
+        {-3, -2},
+        {-3, -3}
     },
     /* L */
     {
-        {-2, -3},
-        {-2, -3},
-        {-2, -3},
+        {-2, -2},
+        {-2, -2},
+        {-2, -2},
         {-2, -2}
     },
     /* L mirrored */
     {
-        {-2, -3},
         {-2, -2},
-        {-2, -3},
-        {-2, -3}
+        {-2, -2},
+        {-2, -2},
+        {-2, -2}
     },
     /* N */
     {
-        {-2, -3},
-        {-2, -3},
-        {-2, -3},
+        {-2, -2},
+        {-2, -2},
+        {-2, -2},
         {-2, -2}
     },
     /* N mirrored */
     {
-        {-2, -3},
-        {-2, -3},
-        {-2, -3},
+        {-2, -2},
+        {-2, -2},
+        {-2, -2},
         {-2, -2}
     },
     /* T */
     {
-        {-2, -3},
-        {-2, -3},
-        {-2, -3},
+        {-2, -2},
+        {-2, -2},
+        {-2, -2},
         {-2, -2}
     },
 };
@@ -297,6 +297,19 @@ static const int mPiecesInitialPosition  [7 /*kind */ ][4 /* rotation */ ][2 /* 
 - (int)getBlockTypeForPiece:(int)piece withRotation:(int)rotation atLocationWithX:(int)x andY:(int)y
 {
     return mPieces[piece][rotation][x][y];
+}
+
+NSArray *mColors;
+
+- (NSColor*)colourForPiece:(int)piece
+{
+    if (!mColors)
+    {
+        // Square, I, L, J, S, Z, T
+        mColors = [NSArray arrayWithObjects:[NSColor redColor], [NSColor greenColor], [NSColor brownColor], [NSColor yellowColor], [NSColor magentaColor], [NSColor blueColor], [NSColor cyanColor], nil];
+    }
+    
+    return mColors[piece];
 }
 
 - (int)getXInitialPosition:(int)piece withRoation:(int)rotation

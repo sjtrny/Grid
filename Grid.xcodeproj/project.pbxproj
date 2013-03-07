@@ -95,7 +95,6 @@
 		AAA0410B16E3098900FA4A97 = {
 			isa = PBXGroup;
 			children = (
-				AA6AD59416E31CF60096AE0F /* GLUT.framework */,
 				AAA0411D16E3098900FA4A97 /* Grid */,
 				AAA0411616E3098900FA4A97 /* Frameworks */,
 				AAA0411516E3098900FA4A97 /* Products */,
@@ -113,6 +112,7 @@
 		AAA0411616E3098900FA4A97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA6AD59416E31CF60096AE0F /* GLUT.framework */,
 				AA4421E616E30BCE00A9F989 /* Quartz.framework */,
 				AA4421E416E30BBB00A9F989 /* OpenGL.framework */,
 				AAA0411716E3098900FA4A97 /* Cocoa.framework */,
